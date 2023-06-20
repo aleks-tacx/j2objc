@@ -1,6 +1,6 @@
 import os
+import plistlib
 import sys
-import xml.etree.ElementTree as ET
 
 from os.path import abspath
 
@@ -12,15 +12,12 @@ plist_filename = abspath(plist_path)
 
 print('Modifying plist: ', plist_filename)
 
-tree = ET.parse(plist_filename)
-root = tree.getroot()
-available_libs = root[0][1]
-
+with open(plist_filename, 'rb') as infile:
+    pl = plistlib.load(infile)
+available_libs = pl['AvailableLibraries']
 for lib in available_libs:
-    key = ET.SubElement(lib, 'key')
-    key.text = 'HeadersPath'
-    headers = ET.SubElement(lib, 'string')
-    headers.text = '../Headers'
-
-tree.write(plist_filename)
+    lib['HeadersPath'] = '../Headers'
+outfile = open(plist_filename, 'wb')
+plistlib.dump(pl, outfile)
+outfile.close()
 
