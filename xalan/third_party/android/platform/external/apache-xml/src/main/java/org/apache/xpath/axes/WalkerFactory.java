@@ -1557,7 +1557,7 @@ public class WalkerFactory
   
   public static boolean canSkipSubtrees(int analysis)
   {
-    return isSet(analysis, BIT_CHILD) | walksSideways(analysis);
+    return isSet(analysis, BIT_CHILD) || walksSideways(analysis);
   }
   
   public static boolean canCrissCross(int analysis)
